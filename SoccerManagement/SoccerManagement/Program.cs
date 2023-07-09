@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SoccerManagement.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<SoccerManagementContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SoccerManagementContext") ?? throw new InvalidOperationException("Connection string 'SoccerManagementContext' not found.")));
 
 // Add services to the container.
 
