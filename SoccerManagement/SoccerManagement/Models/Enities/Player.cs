@@ -2,7 +2,7 @@
 
 namespace SoccerManagement.Models.Enities
 {
-    public sealed class PlayerEntity : EntityWithDates<int>
+    public sealed class Player : EntityWithDates<int>
     {
         public string Name { get; set; }        
         public string Surname { get; set; } //Apelido

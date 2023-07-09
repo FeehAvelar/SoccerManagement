@@ -2,8 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using SoccerManagement.Data;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<SoccerManagementContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SoccerManagementContext") ?? throw new InvalidOperationException("Connection string 'SoccerManagementContext' not found.")));
+
+var connection = builder.Configuration.GetConnectionString("SoccerManagementContext");
+builder.Services.AddDbContext<SoccerManagementContext>(options => options.UseMySql(connection, ServerVersion.AutoDetect(connection))
+        .LogTo(Console.WriteLine, LogLevel.Information)
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors()
+    );
 
 // Add services to the container.
 

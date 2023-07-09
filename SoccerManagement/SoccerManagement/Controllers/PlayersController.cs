@@ -23,7 +23,7 @@ namespace SoccerManagement.Controllers
 
         // GET: api/Players
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PlayerEntity>>> GetPlayerEntity()
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayerEntity()
         {
           if (_context.PlayerEntity == null)
           {
@@ -34,7 +34,7 @@ namespace SoccerManagement.Controllers
 
         // GET: api/Players/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PlayerEntity>> GetPlayerEntity(int id)
+        public async Task<ActionResult<Player>> GetPlayerEntity(int id)
         {
           if (_context.PlayerEntity == null)
           {
@@ -53,7 +53,7 @@ namespace SoccerManagement.Controllers
         // PUT: api/Players/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayerEntity(int id, PlayerEntity playerEntity)
+        public async Task<IActionResult> PutPlayerEntity(int id, Player playerEntity)
         {
             if (id != playerEntity.Id)
             {
@@ -84,7 +84,7 @@ namespace SoccerManagement.Controllers
         // POST: api/Players
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PlayerEntity>> PostPlayerEntity(PlayerEntity playerEntity)
+        public async Task<ActionResult<Player>> PostPlayerEntity(Player playerEntity)
         {
           if (_context.PlayerEntity == null)
           {

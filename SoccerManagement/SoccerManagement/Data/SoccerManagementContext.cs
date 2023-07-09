@@ -14,6 +14,6 @@ namespace SoccerManagement.Data
         {
         }
 
-        public DbSet<SoccerManagement.Models.Enities.PlayerEntity> PlayerEntity { get; set; } = default!;
+        public DbSet<SoccerManagement.Models.Enities.Player> PlayerEntity { get; set; } = default!;
     }
 }
