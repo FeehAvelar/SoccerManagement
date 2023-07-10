@@ -23,24 +23,24 @@ namespace SoccerManagement.Controllers
 
         // GET: api/Players
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayerEntity()
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayer()
         {
-          if (_context.PlayerEntity == null)
+          if (_context.Player == null)
           {
               return NotFound();
           }
-            return await _context.PlayerEntity.ToListAsync();
+            return await _context.Player.ToListAsync();
         }
 
         // GET: api/Players/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayerEntity(int id)
         {
-          if (_context.PlayerEntity == null)
-          {
-              return NotFound();
-          }
-            var playerEntity = await _context.PlayerEntity.FindAsync(id);
+            if (_context.Player == null)
+            {
+                return NotFound();
+            }
+            var playerEntity = await _context.Player.FindAsync(id);
 
             if (playerEntity == null)
             {
@@ -86,11 +86,11 @@ namespace SoccerManagement.Controllers
         [HttpPost]
         public async Task<ActionResult<Player>> PostPlayerEntity(Player playerEntity)
         {
-          if (_context.PlayerEntity == null)
+          if (_context.Player == null)
           {
               return Problem("Entity set 'SoccerManagementContext.PlayerEntity'  is null.");
           }
-            _context.PlayerEntity.Add(playerEntity);
+            _context.Player.Add(playerEntity);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetPlayerEntity", new { id = playerEntity.Id }, playerEntity);
@@ -100,17 +100,17 @@ namespace SoccerManagement.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlayerEntity(int id)
         {
-            if (_context.PlayerEntity == null)
+            if (_context.Player == null)
             {
                 return NotFound();
             }
-            var playerEntity = await _context.PlayerEntity.FindAsync(id);
+            var playerEntity = await _context.Player.FindAsync(id);
             if (playerEntity == null)
             {
                 return NotFound();
             }
 
-            _context.PlayerEntity.Remove(playerEntity);
+            _context.Player.Remove(playerEntity);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace SoccerManagement.Controllers
 
         private bool PlayerEntityExists(int id)
         {
-            return (_context.PlayerEntity?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Player?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

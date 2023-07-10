@@ -1,8 +1,11 @@
-﻿namespace SoccerManagement.Models.Enities.BasesEntities
-{
-    public class EntityWithOwner<IdType> : EntityWithDates<IdType>
-    {
-        public int FkOwner { get; set; }
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-    }
+namespace SoccerManagement.Models.Enities.BasesEntities
+{
+    public interface EntityWithOwner<IdType> : EntityWithDates<IdType>
+    {        
+        public int IdOwner { get; set; }
+        
+        public Player Owner { get; set; }        
+    }    
 }

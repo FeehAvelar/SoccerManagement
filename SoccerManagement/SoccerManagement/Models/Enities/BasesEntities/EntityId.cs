@@ -1,7 +1,9 @@
-﻿namespace SoccerManagement.Models.Enities.BasesEntities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SoccerManagement.Models.Enities.BasesEntities
 {
-    public abstract class EntityId<IdType>        
+    public interface EntityId<IdType>        
     {
-        public IdType Id { get; set; }        
+        public IdType Id { get; set; }
     }
 }

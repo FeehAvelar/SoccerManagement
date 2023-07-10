@@ -1,9 +1,12 @@
-﻿namespace SoccerManagement.Models.Enities.BasesEntities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SoccerManagement.Models.Enities.BasesEntities
 {
-    public abstract class EntityWithDates<IdType> : EntityId<IdType>
+    public interface EntityWithDates<IdType> : EntityId<IdType>
     {
         public DateTime DateAdd { get; set; }
-        public DateTime DateUpdate { get; set; }
-        public int WhoChange { get; set; }
+        public DateTime? DateUpdate { get; set; }        
+        public int IdWhoChange { get; set; }
+        public Player WhoChange { get; set; }
     }
 }

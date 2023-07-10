@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SoccerManagement.Models.Enities
 {
-    public class Player : EntityWithDates<int>
+    public class User : EntityWithDates<int>
     {
         [Key]
         public int Id { get; set; }
@@ -14,14 +14,14 @@ namespace SoccerManagement.Models.Enities
         public int IdWhoChange { get; set; }
         public virtual Player WhoChange { get; set; }
 
-        public string Name { get; set; }        
-        public string Surname { get; set; } //Apelido
-        public string Cellphone { get; set; }
-        public string Email { get; set; }
-        public ICollection<Game> Games{ get; set; }
+        public string Username { get; set; }
+        public string Passworld { get; set; }
+        [ForeignKey("idPlayer")]
+        public int PlayerId { get; set; }
+        [NotMapped]
+        public Player Player { get; set; }
+
+
         
-        [ForeignKey("IdUser")]
-        public int IdUser { get; set; }
-        public User User { get; set; }
     }
 }

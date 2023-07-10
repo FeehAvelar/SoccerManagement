@@ -14,6 +14,36 @@ namespace SoccerManagement.Data
         {
         }
 
-        public DbSet<SoccerManagement.Models.Enities.Player> PlayerEntity { get; set; } = default!;
+        public DbSet<Player> Player { get; set; } = default!;
+        public DbSet<User> User { get; set; } = default!;
+        public DbSet<Game> Game { get; set; } = default!;        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {            
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.WhoChange)
+                .WithMany()
+                .HasForeignKey(g => g.IdWhoChange);
+
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.Owner)
+                .WithMany()
+                .HasForeignKey(g => g.IdOwner);
+
+            modelBuilder.Entity<Player>()
+                .HasOne(p => p.User)
+                .WithOne()
+                .HasForeignKey<Player>(p => p.IdUser);
+
+
+            modelBuilder.Entity<Player>()
+                .HasMany(player => player.Games)
+                .WithMany(game => game.Players)
+                .UsingEntity<Dictionary<string, object>>(
+                    "GamePlayers",
+                    gamePlayers => gamePlayers.HasOne<Game>().WithMany().HasForeignKey("FkGame"),
+                    gamePlayers => gamePlayers.HasOne<Player>().WithMany().HasForeignKey("FkPlayer")                    
+                );
+        }
     }
 }
