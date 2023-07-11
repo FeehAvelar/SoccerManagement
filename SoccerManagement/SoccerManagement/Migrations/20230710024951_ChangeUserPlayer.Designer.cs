@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoccerManagement.Data;
 
@@ -10,9 +11,11 @@ using SoccerManagement.Data;
 namespace SoccerManagement.Migrations
 {
     [DbContext(typeof(SoccerManagementContext))]
-    partial class SoccerManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20230710024951_ChangeUserPlayer")]
+    partial class ChangeUserPlayer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,13 +152,15 @@ namespace SoccerManagement.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("WhoChangeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdUser")
                         .IsUnique();
 
-                    b.HasIndex("IdWhoChange")
-                        .IsUnique();
+                    b.HasIndex("WhoChangeId");
 
                     b.ToTable("Player");
                 });
@@ -245,17 +250,24 @@ namespace SoccerManagement.Migrations
             modelBuilder.Entity("SoccerManagement.Models.Enities.Player", b =>
                 {
                     b.HasOne("SoccerManagement.Models.Enities.User", "User")
-                        .WithOne()
+                        .WithOne("Player")
                         .HasForeignKey("SoccerManagement.Models.Enities.Player", "IdUser");
 
                     b.HasOne("SoccerManagement.Models.Enities.User", "WhoChange")
-                        .WithOne()
-                        .HasForeignKey("SoccerManagement.Models.Enities.Player", "IdWhoChange")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("WhoChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
 
                     b.Navigation("WhoChange");
+                });
+
+            modelBuilder.Entity("SoccerManagement.Models.Enities.User", b =>
+                {
+                    b.Navigation("Player")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
