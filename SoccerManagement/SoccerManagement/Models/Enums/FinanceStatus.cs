@@ -1,6 +1,6 @@
 ﻿namespace SoccerManagement.Models.Enums
 {
-    public enum GameStatus : int
+    public enum FinanceStatus : int
     {
         Peding = 0,
         Billed = 1,

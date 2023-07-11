@@ -11,8 +11,8 @@ namespace SoccerManagement.Models.Enities
         public DateTime DateAdd { get; set; }
         public DateTime? DateUpdate { get; set; }
         [ForeignKey("IdWhoChange")]
-        public int IdWhoChange { get; set; }
-        public virtual Player WhoChange { get; set; }
+        public int? IdWhoChange { get; set; }
+        public virtual User WhoChange { get; set; }
         [ForeignKey("IdOwner")]
         public int IdOwner { get; set; }
         public virtual Player Owner { get; set; }

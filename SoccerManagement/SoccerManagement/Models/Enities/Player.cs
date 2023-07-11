@@ -1,4 +1,5 @@
-﻿    using SoccerManagement.Models.Enities.BasesEntities;
+﻿using Microsoft.EntityFrameworkCore;
+using SoccerManagement.Models.Enities.BasesEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,9 +11,9 @@ namespace SoccerManagement.Models.Enities
         public int Id { get; set; }
         public DateTime DateAdd { get; set; }
         public DateTime? DateUpdate { get; set; }
-        [ForeignKey("IdWhoChange")]
-        public int IdWhoChange { get; set; }
-        public virtual Player WhoChange { get; set; }
+        [ForeignKey("IdWhoChange")]        
+        public int? IdWhoChange { get; set; }
+        public virtual User WhoChange { get; set; }
 
         public string Name { get; set; }        
         public string Surname { get; set; } //Apelido
@@ -21,7 +22,7 @@ namespace SoccerManagement.Models.Enities
         public ICollection<Game> Games{ get; set; }
         
         [ForeignKey("IdUser")]
-        public int IdUser { get; set; }
+        public int? IdUser { get; set; }
         public User User { get; set; }
     }
 }

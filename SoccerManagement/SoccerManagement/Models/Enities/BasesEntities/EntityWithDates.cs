@@ -6,7 +6,7 @@ namespace SoccerManagement.Models.Enities.BasesEntities
     {
         public DateTime DateAdd { get; set; }
         public DateTime? DateUpdate { get; set; }        
-        public int IdWhoChange { get; set; }
-        public Player WhoChange { get; set; }
+        public int? IdWhoChange { get; set; }
+        public User WhoChange { get; set; }
     }
 }
