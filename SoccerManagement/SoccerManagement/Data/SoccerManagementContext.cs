@@ -17,7 +17,7 @@ namespace SoccerManagement.Data
         public DbSet<Player> Player { get; set; } = default!;
         public DbSet<User> User { get; set; } = default!;
         public DbSet<Game> Game { get; set; } = default!;    
-        public DbSet<Financial> financial { get; set; } = default!;
+        public DbSet<Financial> Financial { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            
@@ -27,9 +27,9 @@ namespace SoccerManagement.Data
                 .HasForeignKey(g => g.IdWhoChange);
 
             modelBuilder.Entity<Game>()
-                .HasOne(g => g.Owner)
+                .HasOne(g => g.Creator)
                 .WithMany()
-                .HasForeignKey(g => g.IdOwner);
+                .HasForeignKey(g => g.IdCreator);
 
             modelBuilder.Entity<Player>()
                 .HasOne(p => p.User)
