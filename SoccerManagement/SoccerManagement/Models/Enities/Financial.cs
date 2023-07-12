@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SoccerManagement.Models.Enities
 {
-    public class Financial : EntityWithOwner<int>
+    public class Financial : IEntityWithOwner<int>
     {
-        public int IdOwner { get; set; }
-        public Player Owner { get; set; }
+        public int IdCreator { get; set; }
+        public Player Creator { get; set; }
         public DateTime DateAdd { get; set; }
         public DateTime? DateUpdate { get; set; }
         [ForeignKey("IdWhoChange")]
@@ -19,6 +19,8 @@ namespace SoccerManagement.Models.Enities
         public OriginFinance FinanceOrigin { get; set; }
         public TypeFinance TypeFinance { get; set; }
         public decimal Value { get; set; }
-        public DateTime DatePayment { get; set; }
+        public DateTime? DatePayment { get; set; }
+        public int IdAccountable { get; set; }
+        public Player Accountable { get; set; }
     }
 }

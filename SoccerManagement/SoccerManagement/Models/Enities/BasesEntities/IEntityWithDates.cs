@@ -2,7 +2,7 @@
 
 namespace SoccerManagement.Models.Enities.BasesEntities
 {
-    public interface EntityWithDates<IdType> : EntityId<IdType>
+    public interface IEntityWithDates<IdType> : IEntityId<IdType>
     {
         public DateTime DateAdd { get; set; }
         public DateTime? DateUpdate { get; set; }        

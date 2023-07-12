@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SoccerManagement.Models.Enities
 {
-    public class Player : EntityWithDates<int>
+    public class Player : IEntityWithDates<int>
     {
         [Key]
         public int Id { get; set; }

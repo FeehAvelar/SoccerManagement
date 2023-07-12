@@ -2,7 +2,7 @@
 
 namespace SoccerManagement.Models.Enities.BasesEntities
 {
-    public interface EntityId<IdType>        
+    public interface IEntityId<IdType>        
     {
         public IdType Id { get; set; }
     }
