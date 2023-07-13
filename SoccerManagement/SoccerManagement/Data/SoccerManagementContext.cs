@@ -20,12 +20,7 @@ namespace SoccerManagement.Data
         public DbSet<Financial> Financial { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {            
-            modelBuilder.Entity<Game>()
-                .HasOne(g => g.WhoChange)
-                .WithMany()
-                .HasForeignKey(g => g.IdWhoChange);
-
+        {   
             modelBuilder.Entity<Game>()
                 .HasOne(g => g.Creator)
                 .WithMany()
@@ -36,21 +31,39 @@ namespace SoccerManagement.Data
                 .WithOne()
                 .HasForeignKey<Player>(p => p.IdUser);
 
+            #region LastChange
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.WhoChange)
+                .WithOne()
+                .HasForeignKey<Game>(g => g.IdWhoChange)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Player>()
                 .HasOne(p => p.WhoChange)
                 .WithOne()
                 .HasForeignKey<Player>(p => p.IdWhoChange)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Financial>()
+                .HasOne(f => f.WhoChange)
+                .WithOne()
+                .HasForeignKey<Financial>(f => f.IdWhoChange)                
+                .OnDelete(DeleteBehavior.NoAction);
+            #endregion
 
-            modelBuilder.Entity<Player>()
-                .HasMany(player => player.Games)
-                .WithMany(game => game.Players)
-                .UsingEntity<Dictionary<string, object>>(
-                    "GamePlayers",
-                    gamePlayers => gamePlayers.HasOne<Game>().WithMany().HasForeignKey("FkGame"),
-                    gamePlayers => gamePlayers.HasOne<Player>().WithMany().HasForeignKey("FkPlayer")                    
-                );
+            #region Creator
+            modelBuilder.Entity<Game>()
+               .HasOne(g => g.Creator)
+               .WithOne()
+               .HasForeignKey<Game>(g => g.IdCreator)
+               .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<Financial>()
+               .HasOne(f => f.Creator)
+               .WithOne()
+               .HasForeignKey<Financial>(f => f.IdCreator)
+               .OnDelete(DeleteBehavior.NoAction);
+            #endregion
         }
     }
 }

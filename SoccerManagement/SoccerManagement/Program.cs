@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using SoccerManagement.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var connection = builder.Configuration.GetConnectionString("SoccerManagementContext");
@@ -25,12 +25,13 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
+    
     // Resolve SeedingService and execute the seeding method
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
         var seedingService = services.GetRequiredService<SeedingService>();
-        seedingService.Seed();
+        await seedingService.Seed();
     }
 }
 app.UseHttpsRedirection();

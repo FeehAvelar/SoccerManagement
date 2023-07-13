@@ -1,4 +1,6 @@
-﻿using SoccerManagement.Models.Enities;
+﻿using Microsoft.EntityFrameworkCore;
+using SoccerManagement.Models.Enities;
+using SoccerManagement.Models.Enums;
 
 namespace SoccerManagement.Data
 {
@@ -11,15 +13,61 @@ namespace SoccerManagement.Data
             _context = context;
         }
 
-        public void Seed()
+        public async Task Seed()
         {
-            this.SeedPlayerAndUser();
+            this.SeedUser();
+            this.SeedPlayer();
             this.SeedGame();
-
+            await this.SeedFinancialByGames();
         }
-        public void SeedPlayerAndUser()
+
+        public void SeedUser()
         {
-            if (!_context.Player.Any())
+            if (!_context.User.Any())
+            {   
+                var users = new List<User>()
+                {
+                    new User()
+                    {
+                        Id= 1,
+                        DateAdd= DateTime.Now,
+                        Username="feeh",
+                        Password="1234",
+                    },
+                    new User()
+                    {
+                        Id= 2,
+                        DateAdd= DateTime.Now,
+                        Username="mba",
+                        Password="1234",
+                    },
+                    new User()
+                    {
+                        Id= 3,
+                        DateAdd= DateTime.Now,
+                        Username="ale",
+                        Password="1234",
+                    },
+                    new User()
+                    {
+                        Id= 4,
+                        DateAdd= DateTime.Now,
+                        Username="neymar",
+                        Password="1234",
+                    }
+                };
+
+                _context.User.AddRange(users);
+                _context.SaveChanges();
+            }
+        }
+
+        public void SeedPlayer()
+        {
+            var noHasPlayer = !_context.Player.Any();
+            var hasUsers = _context.User.Any();
+
+            if (noHasPlayer && hasUsers)
             {
                 var players = new List<Player>()
                 {
@@ -31,14 +79,7 @@ namespace SoccerManagement.Data
                         Surname = "Feeh",
                         Cellphone = "1992062026",
                         Email = "felipealpaca@gmail.com",
-                        IdUser = null,                        
-                        //User = new User()
-                        //{
-                        //    Id= 1,
-                        //    DateAdd= DateTime.Now,
-                        //    Username="feeh",
-                        //    Password="1234",
-                        //}
+                        IdUser = 1,
                     },
                     new Player()
                     {
@@ -48,14 +89,7 @@ namespace SoccerManagement.Data
                         Surname = "Alemao",
                         Cellphone = "19911112222",
                         Email = "mauricio@gmail.com",
-                        IdUser = null
-                        //User = new User()
-                        //{
-                        //    Id= 2,
-                        //    DateAdd= DateTime.Now,
-                        //    Username="mba",
-                        //    Password="1234",
-                        //}
+                        IdUser = 2
                     },
                     new Player()
                     {
@@ -65,99 +99,128 @@ namespace SoccerManagement.Data
                         Surname = "",
                         Cellphone = "11922226666",
                         Email = "alexandre@gmail.com",
-                        IdUser = null
-                        //User = new User()
-                        //{
-                        //    Id= 3,
-                        //    DateAdd= DateTime.Now,
-                        //    Username="ale",
-                        //    Password="1234",
-                        //}
+                        IdUser = 3
                     },
                     new Player()
                     {
-                        Id = 5,
+                        Id = 4,
                         Name = "Lucas ",
                         DateAdd = DateTime.Now,
                         Surname = "Neymar",
                         Cellphone = "19911115555",
                         Email = "neymar@gmail.com",
-                        IdUser = null
-                        //User = new User()
-                        //{
-                        //    Id= 5,
-                        //    DateAdd= DateTime.Now,
-                        //    Username="neymar",
-                        //    Password="1234",
-                        //}
+                        IdUser = 4
                     }
                 };
 
-                foreach (Player player in players)
-                {   
-                    _context.Player.Add(player);
-                    _context.SaveChanges();                   
-                }
+                _context.Player.AddRange(players);
+                _context.SaveChanges();                
             }
         }
 
         public void SeedGame()
         {
-            if (!_context.Game.Any())
+            var noHasGame = !_context.Game.Any();
+            var hasPlayers = _context.Player.Any();
+
+            if (noHasGame && hasPlayers)
             {
                 var dataInitial = DateTime.Parse("2023-07-09T16:00");
+                var existingPlayer = _context.Player.ToList();
+
+                var playerFeeh = existingPlayer.Where(x => x.Id == 1).FirstOrDefault();
+                var playerMauricio = existingPlayer.Where(x => x.Id == 2).FirstOrDefault();
+                var playerAlexandre = existingPlayer.Where(x => x.Id == 3).FirstOrDefault();
+                var playerNeymar = existingPlayer.Where(x => x.Id == 4).FirstOrDefault();
+
                 var games = new List<Game>()
                 {
                     new Game()
                     {
                         Id = 1,
                         DateAdd = DateTime.Now,
-                        IdOwner = 1,
+                        IdCreator = 1,
                         DayAmount = 80.0M,
                         GameDate = dataInitial,
                         Players = new List<Player>()
                         {
-                            new Player(){Id = 1},
-                            new Player(){Id = 2},
-                            new Player(){Id = 3},
-                            new Player(){Id = 4}
+                            playerFeeh,
+                            playerMauricio,
+                            playerAlexandre,
+                            playerNeymar
                         }
                     },
                     new Game()
                     {
                         Id = 2,
                         DateAdd = DateTime.Now,
-                        IdOwner = 1,
+                        IdCreator = 1,
                         DayAmount = 80.0M,
                         GameDate = dataInitial.AddDays(7),
                         Players = new List<Player>()
                         {
-                            new Player(){Id = 1},
-                            new Player(){Id = 3},
-                            new Player(){Id = 4},
-                            new Player(){Id = 5}
+                            playerFeeh,
+                            playerAlexandre,
+                            playerNeymar
                         }
                     },
                     new Game()
                     {
                         Id = 3,
                         DateAdd = DateTime.Now,
-                        IdOwner = 1,
+                        IdCreator = 1,
                         DayAmount = 80.0M,
-                        GameDate = dataInitial,
+                        GameDate = dataInitial.AddDays(14),
                         Players = new List<Player>()
                         {
-                            new Player(){Id = 5},
-                            new Player(){Id = 3},
-                            new Player(){Id = 2}
+                            playerNeymar,
+                            playerAlexandre,
+                            playerMauricio
                         }
                     },
                 };
+
                 _context.Game.AddRange(games);
                 _context.SaveChanges();
-            }                
+            }
         }
 
+        public async Task SeedFinancialByGames()
+        {
+            var games = _context.Game.ToList();
+            var hasGame = games.Any();
+            var hasFinancial = _context.Financial.Any();
 
+            if (!hasFinancial && hasGame)
+            {
+                var financialId = 1;
+                foreach ( var game in games )
+                {
+                    var players = await _context.Player.Where(p => p.Games.Any(g => g.Id == game.Id)).ToListAsync();
+
+                    foreach (var player in players)
+                    {
+                        var financial = new Financial()
+                        {
+                            Id = financialId,
+                            IdOrigin = game.Id,
+                            DateAdd = DateTime.Now,
+                            Creator = game.Creator,
+                            FinanceOrigin = OriginFinance.Game,
+                            TypeFinance = TypeFinance.Entrada,
+                            Value = decimal.ToOACurrency(game.DayAmount/players.Count),
+                            DatePayment = null,
+                            IdWhoChange = null,
+                            //IdAccountable = player.Id
+                            Accountable = player
+                        };
+                        _context.Financial.Add(financial);
+                        _context.SaveChanges();
+
+                        financialId++;
+                    }
+                }
+            }
+        }
     }
 }

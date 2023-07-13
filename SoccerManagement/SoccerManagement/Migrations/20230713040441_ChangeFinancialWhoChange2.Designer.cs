@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoccerManagement.Data;
 
@@ -10,9 +11,11 @@ using SoccerManagement.Data;
 namespace SoccerManagement.Migrations
 {
     [DbContext(typeof(SoccerManagementContext))]
-    partial class SoccerManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20230713040441_ChangeFinancialWhoChange2")]
+    partial class ChangeFinancialWhoChange2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,6 +44,9 @@ namespace SoccerManagement.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("AccountableId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateAdd")
@@ -77,8 +83,7 @@ namespace SoccerManagement.Migrations
 
                     b.HasIndex("AccountableId");
 
-                    b.HasIndex("IdCreator")
-                        .IsUnique();
+                    b.HasIndex("CreatorId");
 
                     b.HasIndex("IdWhoChange")
                         .IsUnique();
@@ -112,8 +117,7 @@ namespace SoccerManagement.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCreator")
-                        .IsUnique();
+                    b.HasIndex("IdCreator");
 
                     b.HasIndex("IdWhoChange")
                         .IsUnique();
@@ -221,9 +225,9 @@ namespace SoccerManagement.Migrations
                         .IsRequired();
 
                     b.HasOne("SoccerManagement.Models.Enities.Player", "Creator")
-                        .WithOne()
-                        .HasForeignKey("SoccerManagement.Models.Enities.Financial", "IdCreator")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SoccerManagement.Models.Enities.User", "WhoChange")
@@ -241,15 +245,15 @@ namespace SoccerManagement.Migrations
             modelBuilder.Entity("SoccerManagement.Models.Enities.Game", b =>
                 {
                     b.HasOne("SoccerManagement.Models.Enities.Player", "Creator")
-                        .WithOne()
-                        .HasForeignKey("SoccerManagement.Models.Enities.Game", "IdCreator")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("IdCreator")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SoccerManagement.Models.Enities.User", "WhoChange")
                         .WithOne()
                         .HasForeignKey("SoccerManagement.Models.Enities.Game", "IdWhoChange")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Creator");
 
@@ -265,7 +269,7 @@ namespace SoccerManagement.Migrations
                     b.HasOne("SoccerManagement.Models.Enities.User", "WhoChange")
                         .WithOne()
                         .HasForeignKey("SoccerManagement.Models.Enities.Player", "IdWhoChange")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("User");
 

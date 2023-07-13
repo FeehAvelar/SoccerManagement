@@ -18,11 +18,10 @@ namespace SoccerManagement.Models.Enities
         public string Name { get; set; }        
         public string Surname { get; set; } //Apelido
         public string Cellphone { get; set; }
-        public string Email { get; set; }
-        public ICollection<Game> Games{ get; set; }
-        
+        public string Email { get; set; }                
         [ForeignKey("IdUser")]
         public int? IdUser { get; set; }
         public User User { get; set; }
+        public ICollection<Game> Games { get; set; } = new List<Game>();
     }
 }

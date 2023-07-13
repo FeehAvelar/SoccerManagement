@@ -19,9 +19,6 @@ namespace SoccerManagement.Models.Enities
 
         public decimal DayAmount { get; set; }
         public DateTime GameDate { get; set; }
-        public ICollection<Player> Players { get; set; }
-
-        public Game() { }
-       
+        public ICollection<Player> Players { get; set; } = new List<Player>();
     }
 }
