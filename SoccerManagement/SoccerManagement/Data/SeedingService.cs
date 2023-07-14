@@ -140,6 +140,7 @@ namespace SoccerManagement.Data
                         Id = 1,
                         DateAdd = DateTime.Now,
                         IdCreator = 1,
+                        //Creator = playerFeeh,
                         DayAmount = 80.0M,
                         GameDate = dataInitial,
                         Players = new List<Player>()
@@ -155,6 +156,7 @@ namespace SoccerManagement.Data
                         Id = 2,
                         DateAdd = DateTime.Now,
                         IdCreator = 1,
+                        //Creator = playerFeeh,
                         DayAmount = 80.0M,
                         GameDate = dataInitial.AddDays(7),
                         Players = new List<Player>()
@@ -169,6 +171,7 @@ namespace SoccerManagement.Data
                         Id = 3,
                         DateAdd = DateTime.Now,
                         IdCreator = 1,
+                        //Creator = playerFeeh,
                         DayAmount = 80.0M,
                         GameDate = dataInitial.AddDays(14),
                         Players = new List<Player>()

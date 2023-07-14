@@ -21,10 +21,7 @@ namespace SoccerManagement.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   
-            modelBuilder.Entity<Game>()
-                .HasOne(g => g.Creator)
-                .WithMany()
-                .HasForeignKey(g => g.IdCreator);
+            
 
             modelBuilder.Entity<Player>()
                 .HasOne(p => p.User)
@@ -53,16 +50,14 @@ namespace SoccerManagement.Data
 
             #region Creator
             modelBuilder.Entity<Game>()
-               .HasOne(g => g.Creator)
-               .WithOne()
-               .HasForeignKey<Game>(g => g.IdCreator)
-               .OnDelete(DeleteBehavior.NoAction);
-            
+                .HasOne(g => g.Creator)
+                .WithMany()
+                .HasForeignKey(g => g.IdCreator);
+
             modelBuilder.Entity<Financial>()
                .HasOne(f => f.Creator)
-               .WithOne()
-               .HasForeignKey<Financial>(f => f.IdCreator)
-               .OnDelete(DeleteBehavior.NoAction);
+               .WithMany()
+               .HasForeignKey(f => f.IdCreator);
             #endregion
         }
     }

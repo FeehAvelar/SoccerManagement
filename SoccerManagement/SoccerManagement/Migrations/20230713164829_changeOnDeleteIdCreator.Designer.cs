@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoccerManagement.Data;
 
@@ -10,9 +11,11 @@ using SoccerManagement.Data;
 namespace SoccerManagement.Migrations
 {
     [DbContext(typeof(SoccerManagementContext))]
-    partial class SoccerManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20230713164829_changeOnDeleteIdCreator")]
+    partial class changeOnDeleteIdCreator
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,7 +80,8 @@ namespace SoccerManagement.Migrations
 
                     b.HasIndex("AccountableId");
 
-                    b.HasIndex("IdCreator");
+                    b.HasIndex("IdCreator")
+                        .IsUnique();
 
                     b.HasIndex("IdWhoChange")
                         .IsUnique();
@@ -219,9 +223,9 @@ namespace SoccerManagement.Migrations
                         .IsRequired();
 
                     b.HasOne("SoccerManagement.Models.Enities.Player", "Creator")
-                        .WithMany()
-                        .HasForeignKey("IdCreator")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("SoccerManagement.Models.Enities.Financial", "IdCreator")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SoccerManagement.Models.Enities.User", "WhoChange")
