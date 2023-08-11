@@ -17,5 +17,6 @@ namespace SoccerManagement.Models.Enities
         public int IdPlayer { get; set; }
         [NotMapped]
         public Player Player { get; set; }
+        public byte[] SaltKey { get; set; }
     }
 }
