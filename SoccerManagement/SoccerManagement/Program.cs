@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SoccerManagement.Data;
+using SoccerManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,5 +45,11 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html"); ;
+
+#if DEBUG
+var teste = EncryptService.EncryptPassword("1234", out var seed);
+var senha = EncryptService.VerifyPassword("1234", seed, teste);
+#endif
+
 
 app.Run();
