@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SoccerManagement.Business;
 using SoccerManagement.Data;
 using SoccerManagement.Models.Enities;
+using SoccerManagement.Models.ViewModels;
 
 namespace SoccerManagement.Controllers
 {
@@ -15,20 +12,24 @@ namespace SoccerManagement.Controllers
     public class PlayersController : ControllerBase
     {
         private readonly SoccerManagementContext _context;
+        private readonly UserBusiness _userBusiness;
+        private readonly PlayerBusiness _playerBusiness;
 
         public PlayersController(SoccerManagementContext context)
         {
             _context = context;
+            _userBusiness = new UserBusiness(_context);
+            _playerBusiness = new PlayerBusiness(_context);
         }
 
         // GET: api/Players
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayer()
         {
-          if (_context.Player == null)
-          {
-              return NotFound();
-          }
+            if (_context.Player == null)
+            {
+                return NotFound();
+            }
             return await _context.Player.ToListAsync();
         }
 
@@ -84,16 +85,11 @@ namespace SoccerManagement.Controllers
         // POST: api/Players
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Player>> PostPlayerEntity(Player playerEntity)
+        public async Task<ActionResult<Player>> AddPlayer([FromBody] PlayerInsertViewModel playerInsertModel)
         {
-          if (_context.Player == null)
-          {
-              return Problem("Entity set 'SoccerManagementContext.PlayerEntity'  is null.");
-          }
-            _context.Player.Add(playerEntity);
-            await _context.SaveChangesAsync();
+            var playerEntity = await _playerBusiness.InsertPlayerAndUserAsync(playerInsertModel);
 
-            return CreatedAtAction("GetPlayerEntity", new { id = playerEntity.Id }, playerEntity);
+            return CreatedAtAction("GetPlayerEntity", new { id = playerEntity?.Id }, playerEntity);
         }
 
         // DELETE: api/Players/5
